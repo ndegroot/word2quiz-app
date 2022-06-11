@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "word2quiz-app"
+version = "0.1.0"
+description = ""
+authors = ["Nico de Groot <ndegroot0@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+customtkinter = "^4.3.0"
+word2quiz = "^0.1.9"
+tkhtmlview = {path = "data/tkhtmlview-0.1.0.post1-py3-none-any.whl"}
+rich = "^12.4.4"
+keyring = "^23.6.0"
+canvasapi = "^2.2.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
