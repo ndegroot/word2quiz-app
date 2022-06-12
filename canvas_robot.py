@@ -2,7 +2,8 @@ from dataclasses import dataclass, field, asdict
 import logging
 from canvas_robot_model import get_api_data
 import canvasapi
-from rich.prompt import Prompt
+from canvasapi.course import Course
+# from rich.prompt import Prompt
 from rich.progress import track
 
 
@@ -15,7 +16,7 @@ class Answer:  # pylint: disable=too-few-public-methods
     answer_weight: int
 
 
-AnswerOptions = dict[str, int]  # answer_text, answer_weigth
+AnswerOptions = dict[str, int]  # answer_text, answer_weight
 # complete list of params : https://canvas.instructure.com/doc/api/quiz_questions.html
 
 
@@ -47,7 +48,7 @@ class CanvasRobot(object):
         self.canvas = canvasapi.Canvas(url, key)
     # ----------------------------------------
 
-    def get_course(self, course_id: int):
+    def get_course(self, course_id: int) -> Course:
         """"":returns canvas course by its id"""
         return self.canvas.get_course(course_id)
 

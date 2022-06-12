@@ -434,7 +434,7 @@ class Word2Quiz(ctk.CTkFrame):
         if not_recognized:
             not_recognized_text = pprint.pformat(not_recognized)
             self.txt_quiz_data.insert(tk.END, _('\n- Not recognized lines -'))
-            self.txt_quiz_data.insert(tk.END, not_recognized_text_text)
+            self.txt_quiz_data.insert(tk.END, not_recognized_text)
         else:
             self.txt_quiz_data.insert(tk.END, _('\n- All lines were recognized -'))
 
