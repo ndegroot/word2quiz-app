@@ -95,12 +95,12 @@ class CanvasRobot(object):
         They will be numbered. Should contain '{}' is placehiolder
         starting with 1
         :param data: the quizdata
-        :return:
+        :return: tuple(result, stats)
         """
         if '{}' not in question_format:
             print(f"parameter 'question_format(={question_format})' "
                   f"should contain {{}} als placeholder")
-            return False
+            return False, None
 
         stats = Stats()
         for quiz_name, questions in track(data):
@@ -121,4 +121,4 @@ class CanvasRobot(object):
                 logging.debug(msg)
                 stats.question_ids.append(question_id)
 
-        return stats
+        return True, stats
