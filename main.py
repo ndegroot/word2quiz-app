@@ -444,8 +444,8 @@ class Word2Quiz(ctk.CTkFrame):
         :return: not used"
         """
         canvasrobot = CanvasRobot()
-        stats, canvasrobot.create_quizzes_from_data(course_id=course_id,
-                                                    data=self.quiz_data)
+        result, stats = canvasrobot.create_quizzes_from_data(course_id=course_id,
+                                                             data=self.quiz_data)
 
 
 # define Python user-defined exceptions
@@ -734,8 +734,8 @@ def word2quiz(filename: str,
     if testrun:
         return quiz_data
     canvasrobot = CanvasRobot()
-    stats, canvasrobot.create_quizzes_from_data(course_id=course_id,
-                                                data=quiz_data)
+    result, stats = canvasrobot.create_quizzes_from_data(course_id=course_id,
+                                                         data=quiz_data)
 
     return stats
 
