@@ -32,6 +32,8 @@ from docx2python.iterators import iter_paragraphs
 from canvas_robot import CanvasRobot, Answer
 if sys.platform == 'darwin':
     from macos_messagebox import root, macos_messagebox as messagebox
+else:
+    root = None
 
 GUI = True
 pprint = PrettyPrinter()
@@ -755,14 +757,13 @@ if __name__ == '__main__':
     if GUI:
         ctk.set_appearance_mode("Light")  # Modes: system (default/Mac), light, dark
         ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
-        # works on mac root = root or ctk.CTk()
-        root = ctk.CTk()
+        root = root or ctk.CTk()
         root.geometry("550x700")
         root.resizable(False, False)
         p = root.tk.eval('::msgcat::mcpackagelocale preferences')
         r = root.tk.eval('::msgcat::mcload [file join [file dirname [info script]] msgs]')
 
-        #root.tk.eval('::msgcat::mclocale nl')
+        # root.tk.eval('::msgcat::mclocale nl')
         app = Word2Quiz()
         app.init_ui()
 
