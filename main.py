@@ -1,13 +1,14 @@
 """ main module of word2quiz: GUI and CMD version"""
 import re
 import os
-from os.path import exists
+# from os.path import exists
 import locale
 import sys
-import pathlib
+# import pathlib
 import io
 import glob
 import logging
+import tkinter
 from dataclasses import dataclass
 import gettext
 from pprint import PrettyPrinter
@@ -19,15 +20,15 @@ from typing import Union, Callable
 
 import customtkinter as ctk
 from tkhtmlview import HTMLLabel
-from tkinter import filedialog
-from tkinter.filedialog import askopenfilename, asksaveasfile
+# from tkinter import filedialog
+from tkinter.filedialog import askopenfilename #, asksaveasfile
 
 from lxml import etree
 from rich.console import Console
 from rich.pretty import pprint as rich_pprint
 from rich.prompt import Prompt
 import docx2python as d2p
-
+from docx2python.iterators import iter_paragraphs
 from canvas_robot import CanvasRobot, Answer
 if sys.platform == 'darwin':
     from macos_messagebox import root, macos_messagebox as messagebox
@@ -63,7 +64,7 @@ def get_translator() -> callable(str):
             lcids = [lcid_user, lcid_system]
         else:
             lcids = [lcid_user]
-        return filter(None, [locale.windows_locale.get(i) for i in lcids]) or None
+        return list(filter(None, [locale.windows_locale.get(i) for i in lcids])) or None
 
     def setup_env_other(system_lang=True):
         pass
@@ -191,6 +192,7 @@ class Word2Quiz(ctk.CTkFrame):
     def __init__(self):
         super().__init__()
 
+        self.quiz_data = None
         self.notebook = None
         self.entry_num_questions = None
         self.tkvar_font_normalize = None
@@ -202,6 +204,7 @@ class Word2Quiz(ctk.CTkFrame):
         self.entry_file_name = None
         self.background_image = None
         self.background_image_label = None
+        self.course_id = None
 
     def init_ui(self):
         """
@@ -246,8 +249,8 @@ class Word2Quiz(ctk.CTkFrame):
         #                        borderwidth=0)
         # self.canvas.place(x=50, y=60)
         try:
-            self.master.wm_iconbitmap("../data/word2quiz.ico")
-        except FileNotFoundError:
+            self.master.iconbitmap("../images/word2quiz.ico")
+        except (FileNotFoundError, tkinter.TclError):
             print('icon file is not available')
             pass
         file = ""
@@ -393,6 +396,7 @@ class Word2Quiz(ctk.CTkFrame):
         normalize = int(normalize) if normalize.isdigit() else 0
         par_list, not_recognized_list = get_document_html(filename=f,
                                                           normalized_fontsize=normalize)
+        html = ''
         tot_html = ''
         for p_type, ans_weight, text, html in par_list:
             tot_html += f'<p style="color: green">{p_type} {html}</p>' \
@@ -438,7 +442,7 @@ class Word2Quiz(ctk.CTkFrame):
         else:
             self.txt_quiz_data.insert(tk.END, _('\n- All lines were recognized -'))
 
-    def create_quiz(self):
+    def create_quiz(self, course_id):
         """
         Create the quiz in Canvas using the quizdata
         :return: not used"
@@ -653,6 +657,9 @@ def parse_document_d2p(filename: str, check_num_questions: int, normalize_fontsi
     section_nr = 0  # state machine
     last_p_type = None
     quiz_name = None
+    last_quiz_name = None
+    question_text = ''
+    question_list = []
     not_recognized = []
     result = []
     answers = []
@@ -748,8 +755,9 @@ if __name__ == '__main__':
     if GUI:
         ctk.set_appearance_mode("Light")  # Modes: system (default/Mac), light, dark
         ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
-        root = root or ctk.CTk()
-        root.geometry("600x800")
+        # works on mac root = root or ctk.CTk()
+        root = ctk.CTk()
+        root.geometry("550x700")
         root.resizable(False, False)
         p = root.tk.eval('::msgcat::mcpackagelocale preferences')
         r = root.tk.eval('::msgcat::mcload [file join [file dirname [info script]] msgs]')
