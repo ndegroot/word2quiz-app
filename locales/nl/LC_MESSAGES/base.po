@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 
 #: main.py:767
-msgid "Enter filename"
+msgid "Enter docname"
 msgstr "Voer bestandsnaam in"
 
 #: main.py:770
