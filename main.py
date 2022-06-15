@@ -263,9 +263,9 @@ class Word2Quiz(ctk.CTkFrame):
         canvas_frame = ctk.CTkFrame(self.notebook)
         canvas_frame.pack(fill=tk.BOTH)
 
-        self.notebook.add(file_frame, text='Docx File')
-        self.notebook.add(data_frame, text='Quiz Data')
-        self.notebook.add(canvas_frame, text='Canvas')
+        self.notebook.add(file_frame, text=_('Docx File'))
+        self.notebook.add(data_frame, text=_('Quiz Data'))
+        self.notebook.add(canvas_frame, text=_('Canvas'))
         self.notebook.pack(expand=1, fill="both")
 
         # File_frame Input: button Output: filename label, box with sample
@@ -316,9 +316,7 @@ class Word2Quiz(ctk.CTkFrame):
         self.html_lbl_docsample = HTMLLabel(file_frame,
                                             height=400,
                                             # width=100,
-                                            html="""
-            <p><i>no content yet</i></p>
-            """)
+                                            html=_("<p><i>no content yet</i></p>"))
 
         self.html_lbl_docsample.pack(side="right", pady=20, padx=20)
 
@@ -356,6 +354,27 @@ class Word2Quiz(ctk.CTkFrame):
         # self.txt_quiz_data.configure(text=default_text)
         self.txt_quiz_data.pack(side="right", padx=20, pady=10)
 
+        lbl_course_id = ctk.CTkLabel(canvas_frame,
+                                         width=120,
+                                         height=25,
+                                         text=_("Choose Course"),
+                                         text_font=("Arial", 12)
+                                         )
+        lbl_course_id.pack(side="left", pady=5)
+
+        # Dictionary with options
+        # todo: get list course id list from canvas
+        choices = {'12', '14', '16'}
+        self.tkvar_course_id = tk.StringVar(self.master)
+        # self.tkvar_course_id.set(_('no change'))  # set the default option
+        self.om_course = tk.OptionMenu(canvas_frame, self.tkvar_course_id, *choices, )
+        self.om_course.config(width=6)
+
+        # link function to choice of course
+        self.tkvar_course_id.trace('w', self.on_select_course)
+
+        self.om_course.pack(side="left", pady=5)
+
         # ===============================Button to access save2word method=================
         # save2canvas = Button(root, text="Save to Word File", font=('arial', 10, 'bold'),
         #                      bg="RED", fg='WHITE', command=save2canvas)
@@ -371,6 +390,11 @@ class Word2Quiz(ctk.CTkFrame):
 
     def on_change_cb_normalize_fontsize(self, *args):
         print(self.tkvar_font_normalize.get())
+
+    def on_select_course(self, *args):
+        print(f"Ready to create quiz for course {self.tkvar_course_id.get()}")
+        # todo: call create function and show result in box
+        # idea: first check if quiz with name {} already exists, ask for overwrite
 
     def open_word_file(self):
         """
@@ -405,7 +429,7 @@ class Word2Quiz(ctk.CTkFrame):
         # enable next step
         # root.tk.eval('::msgcat::mclocale nl')
         result = messagebox.askquestion(title="docx",
-                                           message=_('Is the first Q&A ok?'))
+                                        message=_('Is the first Q&A ok?'))
         # todo: change symbol
         if result == 'yes':
             self.notebook.select(1)
