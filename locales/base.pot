@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 11:33+0200\n"
+"POT-Creation-Date: 2023-02-22 23:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,73 +17,97 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.py:231
+#: main.py:235
 msgid "Word to Canvasquiz Converter"
 msgstr ""
 
-#: main.py:252
+#: main.py:256
 msgid ""
 "Your extracted quizdata will appear here.\n"
 "\n"
 " please check the data"
 msgstr ""
 
-#: main.py:271
+#: main.py:268
+msgid "Docx File"
+msgstr ""
+
+#: main.py:269
+msgid "Quiz Data"
+msgstr ""
+
+#: main.py:270
+msgid "Canvas"
+msgstr ""
+
+#: main.py:275
 msgid " Open "
 msgstr ""
 
-#: main.py:280
+#: main.py:284
 msgid "Select docx file"
 msgstr ""
 
-#: main.py:286
+#: main.py:290
 msgid "no file selected"
 msgstr ""
 
-#: main.py:297
+#: main.py:301
 msgid ""
 "Normalize\n"
 "fontsize?"
 msgstr ""
 
-#: main.py:303 main.py:305
+#: main.py:307 main.py:309
 msgid "no change"
 msgstr ""
 
-#: main.py:325
+#: main.py:321
+msgid "<p><i>no content yet</i></p>"
+msgstr ""
+
+#: main.py:327
 msgid "Convert"
 msgstr ""
 
-#: main.py:334
+#: main.py:336
 msgid ""
 "How many questions\n"
 "(in  a section)"
 msgstr ""
 
-#: main.py:406
-msgid "Is the first Q&A ok?"
+#: main.py:362
+msgid "Choose Course"
 msgstr ""
 
-#: main.py:413
+#: main.py:383
+msgid " Create Quizzes in Canvas "
+msgstr ""
+
+#: main.py:444
+msgid "Is the first question block ok?"
+msgstr ""
+
+#: main.py:451
 msgid "Check the Word doc, save it and try again"
 msgstr ""
 
-#: main.py:434
+#: main.py:472
 msgid ""
 "\n"
 "- Not recognized lines -"
 msgstr ""
 
-#: main.py:437
+#: main.py:475
 msgid ""
 "\n"
 "- All lines were recognized -"
 msgstr ""
 
-#: main.py:767
-msgid "Enter filename"
+#: main.py:501 main.py:551
+msgid "Working..."
 msgstr ""
 
-#: main.py:770
-msgid "Working..."
+#: main.py:548
+msgid "Enter filename"
 msgstr ""

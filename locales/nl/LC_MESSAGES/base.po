@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 11:33+0200\n"
+"POT-Creation-Date: 2023-02-22 18:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nico de Groot<nico@ocinet.nl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: main.py:231
+#: main.py:235
 msgid "Word to Canvasquiz Converter"
 msgstr "Omzetten vsn Word naar Canvvasquiz"
 
-#: main.py:252
+#: main.py:256
 msgid ""
 "Your extracted quizdata will appear here.\n"
 "\n"
@@ -32,19 +32,31 @@ msgstr ""
 "\n"
 " controleer de gegevens"
 
-#: main.py:271
+#: main.py:268
+msgid "Docx File"
+msgstr "Docx bestand"
+
+#: main.py:269
+msgid "Quiz Data"
+msgstr "Quiz gegevens"
+
+#: main.py:270
+msgid "Canvas"
+msgstr "Canvas"
+
+#: main.py:275
 msgid " Open "
 msgstr " Open "
 
-#: main.py:280
+#: main.py:284
 msgid "Select docx file"
-msgstr "Kies het docxbestand"
+msgstr "Kies het docx bestand"
 
-#: main.py:286
+#: main.py:290
 msgid "no file selected"
 msgstr "geen bestand gekozen"
 
-#: main.py:297
+#: main.py:301
 msgid ""
 "Normalize\n"
 "fontsize?"
@@ -52,15 +64,19 @@ msgstr ""
 "Normaliseer\n"
 "lettergrootte?"
 
-#: main.py:303 main.py:305
+#: main.py:307 main.py:309
 msgid "no change"
 msgstr "origineel"
 
-#: main.py:325
-msgid "Convert"
-msgstr "Zet om"
+#: main.py:321
+msgid "<p><i>no content yet</i></p>"
+msgstr "<p><i>Nog geeen inhoud</i></p>"
 
-#: main.py:334
+#: main.py:327
+msgid "Convert"
+msgstr "Verwerk"
+
+#: main.py:336
 msgid ""
 "How many questions\n"
 "(in  a section)"
@@ -68,43 +84,43 @@ msgstr ""
 "Hoeveel vragen\n"
 "(in een sectie)"
 
-#: main.py:406
-#, fuzzy
-msgid "Is the first Q&A ok?"
+#: main.py:362
+msgid "Choose Course"
+msgstr "Kies een cursus"
+
+#: main.py:383
+msgid " Create Quizzes in Canvas "
+msgstr " Maak de quizzes aan in Canvas "
+
+#: main.py:444
+msgid "Is the first question block ok?"
 msgstr "Ziet de eerste vraagcombinatie er goed uit?"
 
-#: main.py:413
+#: main.py:451
 msgid "Check the Word doc, save it and try again"
 msgstr "Controleer Word doc, bewaar en probeer opnieuw"
 
-#: main.py:434
+#: main.py:472
 msgid ""
 "\n"
 "- Not recognized lines -"
 msgstr ""
+"\n"
+"- Niet herkende regels -"
 
-#: main.py:437
+#: main.py:475
 msgid ""
 "\n"
 "- All lines were recognized -"
 msgstr ""
+"\n"
+"- Alle regels zijn herkend -"
 
-#: main.py:767
-msgid "Enter filename"
-msgstr "Voer bestandsnaam in"
-
-#: main.py:770
+#: main.py:501 main.py:551
 msgid "Working..."
 msgstr "Bezig..."
 
-#~ msgid "Hello!"
-#~ msgstr "Hallo!"
+#: main.py:548
+msgid "Enter filename"
+msgstr "Voer bestandsnaam in"
 
-#~ msgid "looks ok?"
-#~ msgstr "Is goed?"
-
-#~ msgid "hello there!"
-#~ msgstr "Hallo daar"
-
-#~ msgid "Hello! What is your name?"
-#~ msgstr "Hallo! Hoe heet je"

@@ -2,9 +2,9 @@ from tkinter import PhotoImage, Tk, messagebox
 from tkinter import ttk
 from functools import lru_cache
 """
-On MacOS Big Sur using Python 3.9.3:
+On MacOS Big Sur (at least) using Python 3.9.3:
 - messagebox.showwarning() shows yellow exclamationmark with small rocket icon
-- showerror(),askretrycancel,askyesno,askquestion, askyesnocancel
+- showerror(),askretrycancel,askyesno,askquestion, askyesnocancel give rocket icom
 On MacOS BigSur using Python 3.10.4 same but with a folder icon instead 
 of the rocket item. Tcl/Tk version is 8.6.12 """
 root = Tk()
