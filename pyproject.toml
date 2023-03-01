@@ -1,21 +1,17 @@
 [tool.poetry]
 name = "word2quiz-app"
-version = "0.1.0"
+version = "0.6.0"
 description = ""
 authors = ["Nico de Groot <ndegroot0@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-customtkinter = "^4.3.0"
 rich = "^12.4.4"
-keyring = "^23.6.0"
-canvasapi = ">=2.2.0"
-lxml = "^4.9.1"
-word2quiz = "^0.1.12"
+word2quiz = "*"
+customtkinter = "^4.3.0"
 tkhtmlview = "^0.1.0"
-# canvasrobot = "^0.5.0"
-#canvasrobot = {path="../canvasrobot", develop = true}
 tkinter-tooltip = "^2.1.0"
+markdown = "*"
 
 [tool.poetry.dev-dependencies]
 

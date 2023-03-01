@@ -8,37 +8,32 @@ import pathlib
 import io
 import glob
 import logging
-from dataclasses import dataclass
+from typing import Union, Callable
 import gettext
-from pprint import PrettyPrinter
 from functools import partial
 import threading
 import queue
+from pprint import PrettyPrinter
 
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter.scrolledtext import ScrolledText
-from tktooltip import ToolTip
-
-from typing import Union, Callable
-
-import customtkinter as ctk
-from tkhtmlview import HTMLLabel
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename, asksaveasfile
 
-from lxml import etree
+import customtkinter
+from tktooltip import ToolTip
+import customtkinter as ctk
+from tkhtmlview import HTMLLabel
+
 from rich.console import Console
 from rich.pretty import pprint as rich_pprint
 from rich.prompt import Prompt
-import docx2python as d2p
 
-import word2quiz as w2q
+import word2quiz as w2q  # includes canvasrobot
 
 if sys.platform == 'darwin':
     from macos_messagebox import root, macos_messagebox as messagebox
-
-
 
 def get_translator() -> callable(str):
     def setup_env_windows(system_lang=True):
@@ -134,6 +129,21 @@ class Word2QuizApp(ctk.CTkFrame):
         self.background_image_label = None
         self.thread_create_quizzes = None
 
+    def get_course_combobox(self):
+        db = canvasrobot.db
+        fields = (db.course.course_id, db.course.sis_code)
+        courses = canvasrobot.get_courses_from_database(skip_courses_without_students=True,
+                                                        fields=fields)
+        # create a list of dicts with sis_code as key, course_id as value
+        courses_lookup = {course.sis_code: course.sis_code for course in courses}
+        courses_sis_codes = courses_lookup.keys()
+
+        self.tkvar_course_id = tk.StringVar(self.master)
+        # self.tkvar_course_id.set(_('no change'))  # set the default option
+        return  customtkinter.CTkComboBox(master=canvas_frame,
+                                                   values=courses_sis_code,
+                                                   variable=self.tkvar_course_id)
+
     def init_ui(self):
         """
         ---------------------------------------------
@@ -206,7 +216,7 @@ class Word2QuizApp(ctk.CTkFrame):
                                       corner_radius=8,
                                       command=self.open_word_file)
         btn_open_file.pack(side="bottom", padx=5, pady=5)
-        ToolTip(btn_open_file, msg=_("Open a docx file with special quiz-format") )
+        ToolTip(btn_open_file, msg=_("Open a docx file with special quiz-format. See help.") )
         # # Select word file
         lbl_file = ctk.CTkLabel(file_frame,
                                 width=120,
@@ -296,13 +306,16 @@ class Word2QuizApp(ctk.CTkFrame):
 
         # Dictionary with options
         # todo: get list of course ids (or names+ids) from canvas
-        choices = {'34', '14', '16'}
-        self.tkvar_course_id = tk.StringVar(self.master)
+
+        choices = ['34', '12723', '16']
+        # self.tkvar_course_id = tk.StringVar(self.master)
         # self.tkvar_course_id.set(_('no change'))  # set the default option
-        self.om_course = tk.OptionMenu(canvas_frame, self.tkvar_course_id, *choices, )
-        self.om_course.config(width=6)
+        self.om_course = customtkinter.CTkComboBox(master=canvas_frame,
+                                                   values = choices,
+                                                   width=120,
+                                                   command=self.on_select_course)
         # link function to choice of course
-        self.tkvar_course_id.trace('w', self.on_select_course)
+        #self.tkvar_course_id.trace('w', self.on_select_course)
         self.om_course.pack(side="top", pady=5)
         # progressbar
         self.pb_create_quizzes = ttk.Progressbar(canvas_frame, orient=tk.HORIZONTAL,
@@ -395,10 +408,11 @@ class Word2QuizApp(ctk.CTkFrame):
             w2q.parse_document_d2p(filename=self.entry_file_name.get(),
                                    check_num_questions=to_int(self.entry_num_questions.get()),
                                    normalize_fontsize=to_int(self.tkvar_font_normalize.get()))
-        data_text = pprint.pformat(self.data_dict)
+        pprinter=PrettyPrinter(indent=6)
+        data_text = pprinter.pformat(self.data_dict)
         self.txt_quiz_data.insert(tk.END, data_text)
         if not_recognized:
-            not_recognized_text = pprint.pformat(not_recognized)
+            not_recognized_text = pprinter.pformat(not_recognized)
             self.txt_quiz_data.insert(tk.END, _('\n- Not recognized lines -'))
             self.txt_quiz_data.insert(tk.END, not_recognized_text)
         else:
@@ -410,11 +424,11 @@ class Word2QuizApp(ctk.CTkFrame):
         :return: not used
         """
         _ = self.gettext
-        canvasrobot = w2q.CanvasRobot()
+
         # create a thread for the (slow) creating of quizzes in Canvas
         # stats = canvasrobot.create_quizzes_from_data(course_id=course_id,
         #                                              data=self.data_dict)
-        course_id = self.tkvar_course_id.get()
+        course_id = self.om_course.get()
         kwargs = dict(course_id=course_id,
                       data=self.data_dict,
                       gui_root=self.master,
@@ -434,8 +448,8 @@ class Word2QuizApp(ctk.CTkFrame):
 
 if __name__ == '__main__':
     GUI = True
-    pprint = PrettyPrinter()
     queue = queue.Queue()
+    canvasrobot = w2q.CanvasRobot()
 
     level = logging.INFO  # global logging level, this effects canvasapi too
     logging.basicConfig(filename='word2quiz.log', encoding='utf-8', level=level)
@@ -450,6 +464,7 @@ if __name__ == '__main__':
         p = root.tk.eval('::msgcat::mcpackagelocale preferences')
         r = root.tk.eval('::msgcat::mcload [file join [file dirname [info script]] msgs]')
         # root.tk.eval('::msgcat::mclocale nl')
+
         app = Word2QuizApp()
         app.init_ui()
 
@@ -461,7 +476,8 @@ if __name__ == '__main__':
         # the event is generated in canvasrobot-method _create_quiz_
         update_handler_create_quizzes = partial(pb_create_updater, app.pb_create_quizzes, queue)
         root.bind('<<CreateQuizzes:Progress>>', update_handler_create_quizzes)
-        def show_export_ready():
+        def show_export_ready(event):
+            #todo: change buttontext and disable
             messagebox.showinfo(title="Done", message="Export to Canvas ready")
 
         root.bind('<<CreateQuizzes:Done>>', show_export_ready)
@@ -469,7 +485,10 @@ if __name__ == '__main__':
         root.mainloop()
         exit()
 
-    # start of CMD version
+
+    # start of CMD version ignore when GUI is True
+
+    TEST_COURSE_ID = 34
     _: Union[Callable[[str], str], Callable[[str], str]] = get_translator()
     console = Console(force_terminal=True)  # to trick Pycharm console into showing textattributes
 
@@ -481,7 +500,7 @@ if __name__ == '__main__':
     with console.status(_("Working..."), spinner="dots"):
         try:
             result = w2q.word2quiz(filename,
-                               course_id=34,
+                               course_id=TEST_COURSE_ID,
                                check_num_questions=6,
                                testrun=False)
         except FileNotFoundError as e:
